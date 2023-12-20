@@ -14,10 +14,9 @@ struct Node {
 
     Node(std::string name, double x, double y) : name(std::move(name)), x(x), y(y) {}
 
-    double distanceTo(const Node& otherNode) const {
-        double xDistance = x - otherNode.x;
-        double yDistance = y - otherNode.y;
-        return std::sqrt(xDistance * xDistance + yDistance * yDistance);
+    int distanceTo(const Node& otherNode) const {
+        double distance = std::sqrt((x - otherNode.x) * (x - otherNode.x) + (y - otherNode.y) * (y - otherNode.y));
+        return static_cast<int>(distance + 0.5);  // Round to the nearest integer
     }
 
     bool operator==(const Node& other) const {
@@ -25,8 +24,8 @@ struct Node {
     }
 };
 
-static double calcDistance(const std::vector<Node>& nodes) {
-    double dist = 0.0;
+static int calcDistance(const std::vector<Node>& nodes) {
+    int dist = 0;
 
     for (int i = 0; i < nodes.size() - 1; i++) {
         dist += nodes[i].distanceTo(nodes[i + 1]);
@@ -73,7 +72,6 @@ static std::vector<Node> readTSPFile(const std::string& filename) {
             }
 
             nodes.emplace_back(name, x, y);
-            //std::cout << "Read node: " << name << " (" << x << ", " << y << ")" << std::endl;
         }
     }
 
@@ -98,11 +96,11 @@ void nearestNeighbor(std::string filename) {
     visitedList.push_back(current);
 
     while (!unVisitedList.empty()) {
-        double minDistance = std::numeric_limits<double>::infinity();
+        int minDistance = std::numeric_limits<int>::max();
         Node nearestNode = current;
 
         for (Node node : unVisitedList) {
-            double distance = current.distanceTo(node);
+            int distance = current.distanceTo(node);
             if (distance < minDistance) {
                 minDistance = distance;
                 nearestNode = node;
@@ -130,7 +128,9 @@ void nearestNeighbor(std::string filename) {
 
     std::cout << std::endl;
 
-    int totalDistance = static_cast<int>(calcDistance(visitedList));
+    int totalDistance = calcDistance(visitedList);
     std::cout << "Total Distance: " << totalDistance << std::endl;
     std::cout << "Time in ms: " << duration.count() << std::endl;
 }
+message.txt
+4 KB
