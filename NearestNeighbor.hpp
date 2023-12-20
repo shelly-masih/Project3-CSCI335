@@ -1,5 +1,3 @@
-#ifndef NEAREST_NEIGHBOR_HPP
-#define NEAREST_NEIGHBOR_HPP
 
 #include <algorithm>
 #include <cmath>
@@ -150,7 +148,7 @@ private:
     }
 };
 
-#endif // NEAREST_NEIGHBOR_HPP
+
 
 
 // Nearest neighbor is most efficiently implemented by starting with a collection of unvisited nodes and calculating distances as you go, only calculating distances from a node once you visit it. The collection should have efficient deletion and iteration - something linked-list based would probably be a good choice.
