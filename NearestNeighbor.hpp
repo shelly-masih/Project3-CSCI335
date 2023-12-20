@@ -122,7 +122,7 @@ void nearestNeighbor(std::string& filename) {
     std::cout << it->name;
 
     // Check if it is not the last node
-    if (std::next(it) != visitedList.end()) {
+    if (it != visitedList.end()) {
         std::cout << " ";
     }
   }
