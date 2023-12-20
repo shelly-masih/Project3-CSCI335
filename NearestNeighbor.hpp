@@ -89,9 +89,9 @@ static std::vector<Node> readTSPFile(const std::string& filename) {
 void nearestNeighbor(std::string& filename) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    std::list<Node> nodes = readTSPFile(filename);
-    std::list<Node> unVisitedList(nodes.begin(), nodes.end());
-    std::list<Node> visitedList;
+    std::vector<Node> nodes = readTSPFile(filename);
+    std::vector<Node> unVisitedList(nodes.begin(), nodes.end());
+    std::vector<Node> visitedList;
 
     Node current = unVisitedList[0];
     unVisitedList.erase(unVisitedList.begin());
