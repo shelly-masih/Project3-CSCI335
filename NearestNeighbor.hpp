@@ -100,7 +100,7 @@ static void nearestNeighbor(const std::string& filename) {
     visitedList.push_back(current);
 
     while (!unVisitedList.empty()) {
-        double minDistance = std::numeric_limits<double>::infinity();
+        double minDistance = INFINITY;
         Node nearestNode = current;
 
         for (Node node : unVisitedList) {
