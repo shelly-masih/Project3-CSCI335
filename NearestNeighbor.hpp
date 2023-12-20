@@ -118,10 +118,16 @@ void nearestNeighbor(std::string& filename) {
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    for (const auto& node : visitedList) {
-        std::cout << node.name << " ";
+  for (auto it = visitedList.begin(); it != visitedList.end(); ++it) {
+    std::cout << it->name;
+
+    // Check if it is not the last node
+    if (std::next(it) != visitedList.end()) {
+        std::cout << " ";
     }
-    std::cout << std::endl;
+  }
+
+  std::cout << std::endl;
 
     double totalDistance = calcDistance(visitedList);
     std::cout << "Total Distance: " << totalDistance << std::endl;
