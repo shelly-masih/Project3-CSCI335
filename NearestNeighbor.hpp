@@ -89,11 +89,11 @@ static std::vector<Node> readTSPFile(const std::string& filename) {
 void nearestNeighbor(std::string& filename) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    std::vector<Node> nodes = readTSPFile(filename);
-    std::vector<Node> unVisitedList(nodes.begin(), nodes.end());
-    std::vector<Node> visitedList;
+    std::list<Node> nodes = readTSPFile(filename);
+    std::list<Node> unVisitedList(nodes.begin(), nodes.end());
+    std::list<Node> visitedList;
 
-    Node current = unVisitedList[0];
+    Node current = *unVisitedList.begin();
     unVisitedList.erase(unVisitedList.begin());
     visitedList.push_back(current);
 
@@ -101,7 +101,7 @@ void nearestNeighbor(std::string& filename) {
         double minDistance = INFINITY;
         Node nearestNode = current;
 
-        for (Node node : unVisitedList) {
+        for (const Node& node : unVisitedList) {
             double distance = current.distanceTo(node);
             if (distance < minDistance) {
                 minDistance = distance;
@@ -111,10 +111,11 @@ void nearestNeighbor(std::string& filename) {
 
         current = nearestNode;
         visitedList.push_back(current);
-        unVisitedList.erase(std::remove(unVisitedList.begin(), unVisitedList.end(), current), unVisitedList.end());
+        auto it = std::find(unVisitedList.begin(), unVisitedList.end(), current);
+        unVisitedList.erase(it);
     }
 
-    visitedList.push_back(visitedList[0]);
+    visitedList.push_back(visitedList.front()); // Close the loop
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
