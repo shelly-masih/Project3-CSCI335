@@ -53,12 +53,12 @@ static std::vector<Node> readTSPFile(const std::string& filename) {
             continue;
         }
 
-        if (line == "NODE_COORD_SECTION") {
+        if (line.substr(0,18) == "NODE_COORD_SECTION") {
             readNodes = true;
             continue;
         }
 
-        if (line == "EOF") {
+        if (line.substr(0,3) == "EOF") {
             break;
         }
 
@@ -130,6 +130,6 @@ void nearestNeighbor(std::string filename) {
   std::cout << std::endl;
 
     double totalDistance = calcDistance(visitedList);
-    std::cout << "Total Distanccce: " << totalDistance << std::endl;
+    std::cout << "Total Distance: " << totalDistance << std::endl;
     std::cout << "Time in ms: " << duration.count() << std::endl;
 }
