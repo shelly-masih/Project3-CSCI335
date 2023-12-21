@@ -14,11 +14,11 @@ struct Node {
 
     Node(std::string name, double x, double y) : name(std::move(name)), x(x), y(y) {}
 
-int distanceTo(const Node& otherNode) const {
-    int xDistance = static_cast<int>(x - otherNode.x);
-    int yDistance = static_cast<int>(y - otherNode.y);
-    return static_cast<int>(std::sqrt(xDistance * xDistance + yDistance * yDistance) + 0.5);  // Round to the nearest integer
-}
+    double distanceTo(const Node& otherNode) const {
+        double xDistance = x - otherNode.x;
+        double yDistance = y - otherNode.y;
+        return std::sqrt(xDistance * xDistance + yDistance * yDistance);
+    }
 
     bool operator==(const Node& other) const {
         return name == other.name && x == other.x && y == other.y;
@@ -28,7 +28,7 @@ int distanceTo(const Node& otherNode) const {
 static int calcDistance(const std::vector<Node>& nodes) {
     int dist = 0;
 
-    for (int i = 0; i < nodes.size() - 1; i++) {
+    for (std::vector<Node>::size_type i = 0; i < nodes.size() - 1; i++) {
         dist += nodes[i].distanceTo(nodes[i + 1]);
     }
 
@@ -73,6 +73,7 @@ static std::vector<Node> readTSPFile(const std::string& filename) {
             }
 
             nodes.emplace_back(name, x, y);
+            //std::cout << "Read node: " << name << " (" << x << ", " << y << ")" << std::endl;
         }
     }
 
@@ -97,11 +98,11 @@ void nearestNeighbor(std::string filename) {
     visitedList.push_back(current);
 
     while (!unVisitedList.empty()) {
-        int minDistance = std::numeric_limits<int>::max();
+        double minDistance = std::numeric_limits<double>::infinity();
         Node nearestNode = current;
 
         for (Node node : unVisitedList) {
-            int distance = current.distanceTo(node);
+            double distance = current.distanceTo(node);
             if (distance < minDistance) {
                 minDistance = distance;
                 nearestNode = node;
@@ -117,21 +118,18 @@ void nearestNeighbor(std::string filename) {
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+  for (auto it = visitedList.begin(); it != visitedList.end(); ++it) {
+    std::cout << it->name;
 
-    for (auto it = visitedList.begin(); it != visitedList.end(); ++it) {
-        std::cout << it->name;
-
-        // Check if it is not the last node
-        if (std::next(it) != visitedList.end()) {
-            std::cout << " ";
-        }
+    // Check if it is not the last node
+    if (std::next(it) != visitedList.end()) {
+        std::cout << " ";
     }
+  }
 
-    std::cout << std::endl;
+  std::cout << std::endl;
 
-    int totalDistance = calcDistance(visitedList);
-    std::cout << "Total Distance: " << totalDistance << std::endl;
+    double totalDistance = calcDistance(visitedList);
+    std::cout << "Total Distanccce: " << totalDistance << std::endl;
     std::cout << "Time in ms: " << duration.count() << std::endl;
 }
-message.txt
-4 KB
